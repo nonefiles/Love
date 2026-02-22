@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>With Love - WebGL 3D Audio Visualizer</title>
+  <title>Love</title>
   <style>
     * {
       margin: 0;
@@ -27,26 +27,6 @@
       top: 0;
       left: 0;
       outline: none;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      border: 8px solid;
-      inset: 1rem;
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    h1 {
-      position: absolute;
-      top: 10vh;
-      left: 2.5rem;
-      right: 1rem;
-      text-align: center;
-      font-family: ador-hairline, sans-serif;
-      font-weight: 900;
-      font-size: max(1rem, 3vh);
     }
 
     #play-music {
@@ -143,8 +123,6 @@
 <body>
 
   <canvas class="webgl"></canvas>
-  
-  <h1>With Love</h1>
   
   <button id="play-music" type="button" aria-label="Play music">
     <svg fill="currentColor" viewBox="0 0 512 512" width="100" title="music">
