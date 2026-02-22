@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Love</title>
+  <title>With Love - WebGL 3D Audio Visualizer</title>
   <style>
     * {
       margin: 0;
@@ -117,6 +117,27 @@
       background: #ffb3c6;
       box-shadow: 0 5px 25px rgba(255, 137, 172, 0.7);
       transform: translateY(-3px) scale(1.05);
+    }
+
+    /* Kalp yağmuru için stiller */
+    .falling-heart {
+      position: fixed;
+      top: -10vh;
+      user-select: none;
+      pointer-events: none;
+      z-index: 2000;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--drift, 0), 120vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
@@ -233,6 +254,39 @@
     import { gsap } from "https://cdn.skypack.dev/gsap@3.8.0";
     import { GLTFLoader } from "https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader";
     
+    // Kalp yağmuru animasyonunu başlatan fonksiyon
+    function startHeartRain() {
+      const container = document.createElement('div');
+      container.id = 'heart-rain-container';
+      document.body.appendChild(container);
+
+      // Pembe tonlarında renkler
+      const colors = ['#ff89ac', '#ffb3c6', '#ff5c8a', '#ff6699', '#ff3377'];
+
+      for (let i = 0; i < 150; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.classList.add('falling-heart');
+          heart.innerHTML = '&hearts;';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+          heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2 ile 5 saniye arası
+          heart.style.fontSize = Math.random() * 2 + 1 + 'rem'; // 1rem ile 3rem arası
+          
+          // Sağa veya sola hafif süzülme efekti
+          const drift = (Math.random() - 0.5) * 50;
+          heart.style.setProperty('--drift', `${drift}vw`);
+
+          container.appendChild(heart);
+
+          // Animasyon bittiğinde DOM'dan temizle
+          setTimeout(() => {
+            heart.remove();
+          }, 5000);
+        }, i * 40); // 6 saniye boyunca aralıklarla oluştur
+      }
+    }
+
     class World {
       constructor({
         canvas,
@@ -287,8 +341,10 @@
         this.listenToResize();
         this.listenToMouseMove();
 
+        // Evet butonuna tıklandığında popup'ı kapat ve kalp yağmurunu başlat
         document.getElementById('btn-yes').addEventListener('click', () => {
           document.getElementById('love-popup').classList.remove('show');
+          startHeartRain();
         });
       }
       
